@@ -31,6 +31,9 @@ struct outer_field{
   // Diffusion constants
   double *D;
 
+  // Bacteria diffusion constant
+  double bac_D;
+
   // Bacteria fields
   struct bacteria_field ***b;
   // Dimension (x,y,z)
@@ -43,6 +46,23 @@ struct outer_field{
 
   // Scale units (in meters, seconds and mol)
   double length_scale, time_scale, mol_scale;
+
+  double outputInterval;
+
+  // File names
+  char *outerFileName, *bacteriaFileName;
+
+  // Output surface elements
+  double xyEle, yzEle, xzEle;
+
+  // Volume element
+  double vol;
+
+  // Diffusion advection arrays
+  double ****d_conc_dt, ****a_conc_dt, ***d_pop_dt, ***a_pop_dt;
+
+  // time step
+  double dt;
 
 };
 
@@ -59,6 +79,9 @@ struct bacteria_field{
   // Size of each time step
   double dt;
 
+  // Volume of outer element.
+  double out_vol;
+
   // Concentration field
   double ***conc; 
   // Dimensions ( species, r, z )
@@ -74,11 +97,12 @@ struct bacteria_field{
   // Diffusion constants
   double *D;
 
+
   // Arrays of premultiplication coefficients (diffusion)
   /* The cylindrical diffusion equation, under azimuthal symmetry has three terms:
      first order differential in radius, second order differential in radius,
      second order differential in elevation*/
-
+/*
   double *d1r_left, *d1r_right;
   // Finite centered difference 1st order r differential discretization has 2 terms
 
@@ -87,7 +111,7 @@ struct bacteria_field{
 
   double *d2z_bot, *d2z_center, *d2z_top;
   // Finite centered difference 2nd order z differential discretization has 3 terms
-
+*/
 
   // Commonly used indices
   int i0, i1, i2, i3, i4, i5;
@@ -97,6 +121,19 @@ struct bacteria_field{
 
   // Scale units (in meters, seconds and mol)
   double length_scale, time_scale, mol_scale;
+
+  // Flux coefficients
+  double *ringCoeff;
+  double *baseCoeff;
+
+  // Volume of each ring element
+  double *vol;
+
+  // Environmental concentrations
+  double **conc_env;
+
+  // Mol scale and length scale of outer
+  double outM, outL; 
 
 };
 
